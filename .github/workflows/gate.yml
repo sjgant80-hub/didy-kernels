@@ -31,6 +31,7 @@ jobs:
           node loadout.test.mjs
           node endgame.test.mjs
           node organcheck.test.mjs
+          node find.test.mjs
           node seats.test.mjs
 
       - name: Mutation gate on every kernel

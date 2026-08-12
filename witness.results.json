@@ -1,0 +1,86 @@
+{
+ "ran": "2026-08-12",
+ "runs": [
+  {
+   "kernel": "loadout.mjs",
+   "killed": 15,
+   "score": 0.938,
+   "clean": true,
+   "baselined": 1,
+   "unexplained": 0,
+   "survivors": [
+    {
+     "line": 116,
+     "mutation": "> → >=",
+     "snippet": "if (rank(lvl) > rank(union[r] || 'none')) union[r] = lvl;"
+    }
+   ]
+  },
+  {
+   "kernel": "endgame.mjs",
+   "killed": 52,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
+   "kernel": "organcheck.mjs",
+   "killed": 31,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
+   "kernel": "find.mjs",
+   "killed": 44,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
+   "kernel": "organs/ledger.mjs",
+   "killed": 11,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
+   "kernel": "organs/pipeline.mjs",
+   "killed": 22,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
+   "kernel": "organs/deadline.mjs",
+   "killed": 13,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
+   "kernel": "organs/roster.mjs",
+   "killed": 20,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  }
+ ],
+ "killed": 208,
+ "unexplained": 0,
+ "allClean": true
+}

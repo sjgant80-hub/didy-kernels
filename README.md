@@ -32,6 +32,7 @@ functions; the didy that uses them stays on its owner's machine and is never pub
 | `loadout.mjs` | unproven gear cannot be equipped; a build is the union of its gear **clamped** to what the character holds |
 | `endgame.mjs` | there is **no setter** for level, and you cannot skip a rung |
 | `organcheck.mjs` | an organ is admitted because it was **read**, never because it arrived claiming to be fine |
+| `find.mjs` | nonsense returns **nothing**, and says so — rather than padding with its ten least-bad rows |
 | `organs/ledger.mjs` | an entry that does not balance **is not recorded** — and a correction is a new entry, never an edit |
 | `organs/pipeline.mjs` | a deal cannot enter a stage it has not earned; the forecast carries its exclusions |
 | `organs/deadline.mjs` | an unknown legal rule is **refused, never estimated** |
@@ -47,7 +48,17 @@ Every kernel is mutated and every mutant must die, or be baselined **with a writ
 survivor with no reason is an open hole; a gate that killed nothing is not evidence, it is a green
 light. CI fails on either.
 
-Current: **164 mutants killed · 0 unexplained · 1 baselined with a proof of equivalence.**
+Current: **208 mutants killed · 0 unexplained · 1 baselined with a proof of equivalence.**
+
+## A note on what is NOT here
+
+`find.mjs` takes its `recall` and `shadows` as arguments rather than importing them. That is not
+decoration: the implementations live in a memory kernel that holds private material and is never
+published. Injecting them means the search is pure, standalone, gate-able by anyone — and the thing
+holding the private parts stays on its owner's machine.
+
+It also turned out to be the better shape. A search you cannot hand a different recall is a search
+you cannot test without building the entire body first.
 
 ## The honest bound
 
