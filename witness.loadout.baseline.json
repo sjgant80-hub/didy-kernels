@@ -1,0 +1,7 @@
+[
+  {
+    "mutation": "> → >=",
+    "snippet": "if (rank(lvl) > rank(union[r] || 'none')) union[r] = lvl;",
+    "reason": "PROVABLY EQUIVALENT. The union takes the highest level asked for across the equipped gear. Under >= the only additional case is rank equality, which reassigns the identical level over itself — a no-op, since both sides are the same canonical level string. No loadout can distinguish the two. The strictly-greater form is kept because it says what is meant: only raise the union, never rewrite it. §10 pins the behaviour that actually matters — whichever order two items are equipped in, the higher level wins."
+  }
+]

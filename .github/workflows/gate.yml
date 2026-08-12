@@ -1,0 +1,55 @@
+name: gate
+
+# The whole point of this file: somebody who is not the author runs the gate, on a machine the author
+# does not own, from a fresh clone. A green here is the only evidence in the whole ladder that does not
+# rest on trusting the person making the claim.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # ⚑ PINNED. An unpinned gate is a gate whose rules can change under you between the run that
+      # passed and the run you are citing — and "it passed on some version of the checker" is not a
+      # claim anybody can verify.
+      - name: Fetch witness @v0.2
+        run: |
+          git clone --depth 1 --branch v0.2 https://github.com/sjgant80-hub/witness.git .witness
+          echo "WITNESS=$GITHUB_WORKSPACE/.witness/witness.mjs" >> "$GITHUB_ENV"
+
+      - name: Tests must pass before anything is mutated
+        run: |
+          node loadout.test.mjs
+          node endgame.test.mjs
+          node organcheck.test.mjs
+          node seats.test.mjs
+
+      - name: Mutation gate on every kernel
+        run: node gate-all.mjs
+
+      # A gate that reports "not clean" and exits zero is decorative. This is the line that makes the
+      # workflow's own conclusion mean something.
+      - name: Refuse anything short of clean
+        run: |
+          node -e "
+            const r = require('./witness.results.json');
+            for (const x of r.runs) console.log(x.kernel.padEnd(22), 'killed', x.killed, x.clean ? 'CLEAN' : 'NOT CLEAN');
+            if (!r.allClean) { console.error('\nA kernel did not come back clean — surviving mutants are test-theatre.'); process.exit(1); }
+            if (r.unexplained > 0) { console.error('\n' + r.unexplained + ' survivor(s) with no written reason.'); process.exit(1); }
+            console.log('\ntotal killed', r.killed, '· unexplained', r.unexplained);
+          "
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: witness-results
+          path: witness.results.json
