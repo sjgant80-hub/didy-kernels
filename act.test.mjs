@@ -3,7 +3,7 @@
 // The failure this kernel exists to prevent is subtle: an agenda that blends a MEASURED gap with an
 // INFERRED one reads as a single confident list, and the measurement is what gets diluted. So most of
 // these tests are about keeping the two kinds apart and keeping the bound attached.
-import { orbits, agenda } from './act.mjs';
+import { orbits, agenda, excused, exemptionOf, MIN_REASON } from './act.mjs';
 
 let pass = 0, fail = 0;
 const ok = (c, m) => { c ? pass++ : fail++; console.log((c ? '  ✓ ' : '  ✗ FAIL ') + m); };
@@ -122,6 +122,38 @@ console.log('\n=== §10 · the fields the gate found unguarded ===');
   ok(!/showing/.test(exact.line), 'and the line does not claim it is showing a subset');
   const over = agenda(Array.from({ length: 11 }, (_, i) => node('n' + i, true, false, '2026-08-01')), [], { limit: 10 });
   ok(over.truncated === 1 && /showing 10 of 11/.test(over.line), 'one more is');
+}
+
+console.log('\n=== §11 · ⚑ AN EXEMPTION IS A SENTENCE, NOT A FLAG ===');
+{
+  const nodes = [node('the-room', true, false, '2026-08-02'), node('real-gap', true, false, '2026-08-01')];
+  const good = { 'the-room': 'PRIVATE by design — a five-seat multi-agent room; a page would publish it' };
+
+  const a = agenda(nodes, [], { exempt: good });
+  ok(a.orbits === 1 && a.agenda[0].what === 'real-gap', 'an excused repo leaves the agenda');
+  ok(a.excused === 1, '⚑ and is COUNTED — a backlog that silently shrank looks identical to one that got finished');
+  ok(a.excusedRows[0].what === 'the-room' && /PRIVATE by design/.test(a.excusedRows[0].why),
+     'with its reason returned, so the excuse is a decision on the record');
+  ok(/1 excused with a written reason/.test(a.line), 'and the line says so');
+
+  // ⚑ The refusals: a bare name, an empty string, or a two-word excuse are NOT exemptions.
+  ok(agenda(nodes, [], { exempt: { 'the-room': true } }).orbits === 2, '⚑ a bare flag excuses nothing');
+  ok(agenda(nodes, [], { exempt: { 'the-room': '' } }).orbits === 2, 'nor does an empty reason');
+  ok(agenda(nodes, [], { exempt: { 'the-room': 'private' } }).orbits === 2, '⚑ nor a one-word excuse — an excuse is not a reason');
+  ok(MIN_REASON >= 20, 'the floor is high enough to require a sentence');
+  // ⚑ Exactly at the floor is a reason. An off-by-one here rejects the shortest honest excuse and
+  // quietly puts a repo back on the list that someone had already decided about.
+  const exact = 'x'.repeat(MIN_REASON), under = 'x'.repeat(MIN_REASON - 1);
+  ok(exemptionOf({ n: exact }, 'n') === exact, 'a reason of exactly the minimum length counts');
+  ok(exemptionOf({ n: under }, 'n') === null, 'one character shorter does not');
+  ok(exemptionOf({ n: '  ' + exact + '  ' }, 'n') === exact, 'and it is measured after trimming, not before');
+  ok(exemptionOf(good, 'the-room') !== null && exemptionOf(good, 'real-gap') === null, 'exemptionOf answers per name');
+  ok(exemptionOf(null, 'x') === null && exemptionOf({}, 'x') === null, 'a missing table excuses nothing');
+
+  // A live repo is not "excused" — it was never on the list.
+  ok(excused([node('shipped', true, true, '2026-08-01')], { shipped: 'a reason long enough to count here' }).length === 0,
+     'something already live is not reported as excused — it was never a gap');
+  ok(excused(null, good).length === 0 && orbits(null, good).length === 0, 'garbage excuses nothing and orbits nothing');
 }
 
 console.log('\n=== §9 · pure under garbage ===');

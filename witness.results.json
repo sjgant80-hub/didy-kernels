@@ -72,7 +72,7 @@
   },
   {
    "kernel": "act.mjs",
-   "killed": 15,
+   "killed": 22,
    "score": 1,
    "clean": true,
    "baselined": 0,
@@ -116,7 +116,7 @@
    "survivors": []
   }
  ],
- "killed": 334,
+ "killed": 341,
  "unexplained": 0,
  "allClean": true
 }
