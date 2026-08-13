@@ -36,6 +36,7 @@ functions; the didy that uses them stays on its owner's machine and is never pub
 | `sessions.mjs` | a system reminder, a tool result and a compaction summary all wear the user's role and are **not the user** |
 | `episodes.mjs` | co-occurrence is the only relation a transcript asserts — `related`, never an invented predicate |
 | `artifacts.mjs` | secrets are never indexed; contents are never stored; **"everything" is not a corpus, it is a disk** |
+| `act.mjs` | a **measured** gap and an **inferred** one are never blended into one list, and the bound travels with the task |
 | `organs/ledger.mjs` | an entry that does not balance **is not recorded** — and a correction is a new entry, never an edit |
 | `organs/pipeline.mjs` | a deal cannot enter a stage it has not earned; the forecast carries its exclusions |
 | `organs/deadline.mjs` | an unknown legal rule is **refused, never estimated** |

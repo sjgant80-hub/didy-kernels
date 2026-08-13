@@ -71,6 +71,15 @@
    "survivors": []
   },
   {
+   "kernel": "act.mjs",
+   "killed": 15,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
    "kernel": "organs/ledger.mjs",
    "killed": 11,
    "score": 1,
@@ -107,7 +116,7 @@
    "survivors": []
   }
  ],
- "killed": 319,
+ "killed": 334,
  "unexplained": 0,
  "allClean": true
 }

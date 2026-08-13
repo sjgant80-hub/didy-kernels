@@ -1,35 +1,38 @@
-Publish the four kernels that were gated once and then forgotten
+Add act.mjs - the consumer that makes a diagnostic worth having
 
-sessions, episodes, artifacts and find were each mutation-gated by hand when
-they were written, and none of them entered gate-all.mjs. So the record every
-downstream surface reads - the character sheet's rung 5, this repo's CI - was
-reporting 164 mutants when 319 had actually been killed. A kernel gated once
-and never again is gated at a moment, not continuously.
+A liveness diagnostic had been reporting 31 orbiting folds - work touched
+inside the window that leaves nothing anyone else can run - and nothing read
+it. A diagnostic nobody acts on costs the same as being wrong. This is the
+consumer: it turns the verdict into an agenda.
 
-All four are pure and standalone. find.mjs takes its recall and shadows as
-arguments rather than importing them, because the implementations live in a
-memory kernel that holds private material; the other three have no imports at
-all. Their tests import nothing but the kernel under test.
+Two properties carry the weight:
 
-What each refuses:
+  MEASURED AND INFERRED ARE NEVER BLENDED. An orbit is a fact: this was
+  touched, and it serves no page. A shadow is an inference: this was circled
+  and never committed to. Both belong on an agenda, but ranking them into one
+  undifferentiated list is how a measurement gets diluted into a hunch, so
+  every row is labelled with which kind of claim it is and the measured ones
+  lead.
 
-  sessions  - a system reminder, a tool result and a compaction summary all
-              arrive wearing the user's role and are not the user. The filter
-              is a FIELD (origin.kind), not a pattern list, because a field
-              catches machine origins nobody has invented yet.
-  episodes  - co-occurrence is the only relation a transcript honestly
-              asserts. The predicate is `related`, never an invented one, and
-              topics are grounded in real names so the graph cannot fill with
-              "thing" and "build".
-  artifacts - secrets are never indexed, contents are never stored, and
-              "everything" is not a corpus - it is a disk. Version collapse is
-              scoped to the folder, because filename alone folded 78% of a
-              real corpus away by merging every README into one.
+  THE BOUND TRAVELS WITH THE TASK. "Orbit" means no live page. It does not
+  mean unused, unfinished or bad - whether anyone actually runs a thing cannot
+  be read from repo metadata, and turning a finding into a to-do does not
+  upgrade the evidence behind it. That sentence ships in the output rather
+  than in a footnote nobody reads.
 
-Also fixes a baseline file that carried a UTF-8 BOM, which made JSON.parse
-throw. The gate reported that honestly as an unexplained survivor rather than
-treating an unreadable record as a pass - which is the correct direction to
-fail, and had teeth: rung 5 requires zero unexplained.
+Smaller calls that are still real: every row states what would close it, and
+concretely ("ship a page anyone can open", not "improve it"); an idea circled
+once is a passing thought rather than an agenda item; truncation is reported,
+because a list of ten reads identically whether it is all of them or the first
+ten of ninety, and only one of those is finishable; and an empty agenda says
+which two things that could mean rather than looking like success.
 
-319 killed across eleven kernels, 0 unexplained, 1 baselined with a written
-proof of equivalence.
+Getting it clean removed constructs rather than excusing them. A ternary whose
+two arms both yielded zero at the boundary could not be made to fail, and two
+fallback guards were dead because the filter above already guaranteed a
+number - both replaced rather than baselined. One mutant landed inside a
+comment that quoted an operator, which is now the fourth time that has
+happened here and is worth naming as a habit: do not write operators in prose.
+
+15 killed, 41 tests, empty baseline. Repo total: 334 across twelve kernels,
+0 unexplained, 1 baselined with a written proof of equivalence.
