@@ -1,5 +1,9 @@
 # didy-kernels
 
+### ▶ **https://sjgant80-hub.github.io/didy-kernels/**
+
+Every number on that page is read from `witness.results.json`, which `gate-all.mjs` writes by running the gate. None of it is typed.
+
 **The pure kernels behind a didy, published so somebody who is not their author can run the gate.**
 
 [![gate](https://github.com/sjgant80-hub/didy-kernels/actions/workflows/gate.yml/badge.svg)](https://github.com/sjgant80-hub/didy-kernels/actions/workflows/gate.yml)
