@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>didy-kernels — 334 mutants killed</title>
+<meta name="description" content="The pure kernels behind a didy, published so somebody who is not their author can run the gate. 334 mutants killed across 12 kernels.">
+<style>
+  :root{
+    --bg:#0a0c0f;--panel:#11151b;--line:#232b36;--ink:#dde5ef;--dim:#8d9bad;--faint:#5d6b7d;
+    --ok:#3fb27f;--warn:#d9a441;--accent:#6ea8fe;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55}
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px 72px}
+  a{color:var(--accent)} code{font-family:var(--mono);font-size:.92em}
+  header{padding:46px 0 24px;border-bottom:1px solid var(--line)}
+  h1{font-family:var(--mono);font-size:clamp(23px,4.2vw,34px);margin:0 0 10px;letter-spacing:-.02em}
+  h1 .n{color:var(--ok)}
+  .lede{color:var(--dim);max-width:62ch;margin:0;font-size:clamp(15px,2.2vw,17.5px)}
+  .lede b{color:var(--ink);font-weight:600}
+  .stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .stat{font-family:var(--mono);font-size:12px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:5px 11px;color:var(--dim)}
+  .stat b{color:var(--ink)} .stat.ok b{color:var(--ok)}
+  h2{font-size:12.5px;font-family:var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:36px 0 14px}
+  .k{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:15px 17px;margin-bottom:10px}
+  .k .top{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+  .k .name{font-family:var(--mono);font-size:15px;color:var(--ink)}
+  .k .title{color:var(--dim);font-size:13.5px;flex:1;min-width:180px}
+  .k .num{font-family:var(--mono);font-size:12px;color:var(--ok);white-space:nowrap}
+  .k .num.warn{color:var(--warn)}
+  .k .ref{margin:9px 0 0;font-size:13.5px;color:var(--dim);border-left:2px solid var(--line);padding-left:11px}
+  .note{border-left:2px solid var(--line);padding-left:13px;color:var(--dim);font-size:13.5px;margin:14px 0}
+  .note.warn{border-left-color:var(--warn)}
+  .note b{color:var(--ink)}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;color:var(--dim);margin:0}
+  footer{margin-top:42px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px}
+</style>
+</head>
+<body><div class="wrap">
+
+<header>
+  <h1>didy-kernels · <span class="n">334</span> mutants killed</h1>
+  <p class="lede">The pure kernels behind a didy, published so <b>somebody who is not their author can run the gate</b>.
+  A green gate on your own laptop says the code passed on hardware you control — which is exactly the evidence a
+  stranger has no reason to accept.</p>
+  <div class="stats">
+    <span class="stat ok"><b>334</b> mutants killed</span>
+    <span class="stat"><b>12</b> kernels</span>
+    <span class="stat ok"><b>0</b> unexplained</span>
+    <span class="stat"><b>1</b> baselined with a written proof</span>
+    <span class="stat">gate run <b>2026-08-13</b></span>
+    <span class="stat ok"><b>all clean</b></span>
+  </div>
+</header>
+
+<h2>What each one refuses</h2>
+<div class="k">
+  <div class="top">
+    <span class="name">loadout.mjs</span>
+    <span class="title">SI-DIDY AS A CHARACTER SHEET</span>
+    <span class="num">15 killed · 1 baselined</span>
+  </div>
+  <p class="ref">THE GAME VOCABULARY IS NOT DECORATION, IT IS THE SIMPLIFICATION. 1,621 repos is illegible to everyone, including the person who built them. &quot;Armour, gems, potions, gold, levels&quot; is vocabulary every human already holds. And it maps onto machinery that is already shipped and gated — which is why it is honest to use it: an item's STATS are i</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">endgame.mjs</span>
+    <span class="title">SI-DIDY AT MAX, AND WHY THAT IS THE RIGHT THING TO BUILD FIRST</span>
+    <span class="num">52 killed</span>
+  </div>
+  <p class="ref">THE ONE RULE THAT MAKES THE WHOLE THING HONEST: THERE IS NO SETTER. `levelOf` takes EVIDENCE and returns a tier. Nothing in this module can award a tier, and nothing accepts a tier as input. That is [[earned]] as a data structure — you cannot CLAIM a level, only present what you did and have it read. A character sheet with a writable leve</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">organcheck.mjs</span>
+    <span class="title">THE RIGHT INSTRUMENT FOR THE MATERIAL</span>
+    <span class="num">31 killed</span>
+  </div>
+  <p class="ref">THE PROPERTY THAT MATTERS: an organ is admitted because it was READ, never because it arrived claiming to be fine. `admit()` takes source text and returns a verdict. There is no parameter through which a caller can pass &quot;proven&quot;, which is what makes the equip endpoint safe by construction rather than by remembering to check.</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">find.mjs</span>
+    <span class="title">ASK SI-DIDY TO FIND SOMETHING</span>
+    <span class="num">44 killed</span>
+  </div>
+  <p class="ref">AND IT SAYS WHEN IT FOUND NOTHING. A search that pads a weak answer with its ten least-bad rows is the single most common way a tool teaches you to stop trusting it. Below the floor, this returns nothing and says so. NO IMPORTS, ON PURPOSE. This used to pull `recall` and `shadows` straight out of soul.mjs, which meant publishing the searc</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">sessions.mjs</span>
+    <span class="title">LEARN FROM THE WORK, NOT FROM THE CHAT WINDOW</span>
+    <span class="num">50 killed</span>
+  </div>
+  <p class="ref">AND THE HARD PART IS DECIDING WHOSE WORDS THEY ARE. A transcript is full of text that LOOKS like the user and is not: system reminders injected into user turns, tool results delivered as user messages, compaction summaries the assistant wrote about itself. Learning from those would teach si-didy its own echo — the most expensive possible </p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">episodes.mjs</span>
+    <span class="title">TURN SESSIONS INTO SOMETHING THE DREAM CYCLE CAN ACTUALLY EAT</span>
+    <span class="num">23 killed</span>
+  </div>
+  <p class="ref">AND THE ONLY RELATION A TRANSCRIPT HONESTLY ASSERTS IS CO-OCCURRENCE. Simon saying &quot;wishwood&quot; and &quot;nobeds&quot; in one breath is evidence they belong together. It is NOT evidence of what the relationship IS, and inventing a predicate for it — &quot;wishwood USES nobeds&quot; — would be fabrication dressed as learning. So the predicate is `related`, whic</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">artifacts.mjs</span>
+    <span class="title">THE BUILDS THAT NEVER BECAME REPOS</span>
+    <span class="num">38 killed</span>
+  </div>
+  <p class="ref">NAME AND TITLE ONLY. NEVER CONTENTS. The soul is written to disk and read back for years, so swallowing file bodies would turn a memory into an uncontrolled copy of the disk — and the one thing worth knowing about a local artifact is that it EXISTS and what it is called. Everything else is a path away, and a path is cheaper to hold than a</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">act.mjs</span>
+    <span class="title">TURN THE WISP'S VERDICT INTO SOMETHING TO DO</span>
+    <span class="num">15 killed</span>
+  </div>
+  <p class="ref">MEASURED BEATS INFERRED, AND THE DIFFERENCE IS LABELLED. An ORBIT is a fact: you touched this repo, and it serves no page. A SHADOW is an inference: you circled this idea and did not commit. Both belong on an agenda, but a reader must never have to guess which kind of claim a row is — ranking them into one undifferentiated list is how a m</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">organs/ledger.mjs</span>
+    <span class="title">MONEY, AND THE ONE RULE THAT MAKES A NUMBER TRUSTWORTHY</span>
+    <span class="num">11 killed</span>
+  </div>
+  <p class="ref">AN ENTRY THAT DOES NOT BALANCE IS NOT RECORDED. Not flagged, not queued for review, not saved with a warning — refused at the point of writing. Every accounting scandal of the last century has the same shape underneath: a number that was allowed in while it was wrong, and reconciled later by someone with a reason. Balance checked at write</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">organs/pipeline.mjs</span>
+    <span class="title">SALES, WITHOUT THE PART WHERE EVERYONE LIES TO THEMSELVES</span>
+    <span class="num">22 killed</span>
+  </div>
+  <p class="ref">A DEAL CANNOT ENTER A STAGE IT HAS NOT EARNED. Every CRM lets you drag a card to &quot;Commit&quot; because you feel good about the call. That is why forecasts are fiction: the pipeline records confidence and then reports it as though it were evidence. Here each stage has ENTRY EVIDENCE, and a deal without it is refused — the same rule as unproven </p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">organs/deadline.mjs</span>
+    <span class="title">LEGAL DATES, AND THE REFUSAL THAT MAKES THEM SAFE</span>
+    <span class="num">13 killed</span>
+  </div>
+  <p class="ref">AN UNKNOWN RULE IS REFUSED. NEVER ESTIMATED. This is the single most important line in the file. A wrong legal deadline is not a slightly-wrong answer, it is a missed limitation period and a struck-out claim — and a plausible guess is far more dangerous than a blank, because a blank gets checked by a human and a guess does not. Every rule</p>
+</div>
+<div class="k">
+  <div class="top">
+    <span class="name">organs/roster.mjs</span>
+    <span class="title">PEOPLE, AND WHY A CV IS NOT EVIDENCE</span>
+    <span class="num">20 killed</span>
+  </div>
+  <p class="ref">YOU CANNOT CLAIM A SKILL, ONLY DEMONSTRATE IT. The same rule as [[earned]], and the same rule as unproven gear: `has()` reads demonstrations, and there is no function anywhere in this file that takes a skill and marks it true. A roster you can write into is a list of assertions; a roster you can only add evidence to is a record.</p>
+</div>
+
+<h2>The gate</h2>
+<pre>node gate-all.mjs</pre>
+<p class="note">Every kernel is mutated and every mutant must die, or be baselined <b>with a written reason</b>.
+A survivor with no reason is an open hole; a gate that killed nothing is not evidence, it is a green light.
+CI fails on either.</p>
+<p class="note"><b>An unreadable gate record is not a pass.</b> A baseline file that cannot be parsed is
+reported as an unexplained survivor rather than treated as empty — which caught a UTF-8 BOM that would
+otherwise have read as clean forever.</p>
+
+<h2>The honest bound</h2>
+<p class="note warn">CI green proves these <b>kernels</b> hold under mutation on a machine the author does not
+own. It says nothing about the agent running them, the data it holds, or anyone's business outcomes.
+That is the whole claim, and it is deliberately small.</p>
+
+<footer>
+  <p><b>Generated, never typed.</b> The counts come from <code>witness.results.json</code>, written by a real
+  gate run. Each kernel's title and refusal are read from its own header. Re-run <code>node build-page.mjs</code>
+  and this page is true again — it cannot claim a number the gate did not produce.</p>
+  <p>MIT · part of the Fall estate · <a href="https://github.com/sjgant80-hub/didy-kernels">source</a> ·
+  <a href="https://github.com/sjgant80-hub/didy-kernels/actions/workflows/gate.yml">CI</a> ·
+  <a href="https://sjgant80-hub.github.io/fallworld/">fall world</a></p>
+</footer>
+</div></body>
+</html>
