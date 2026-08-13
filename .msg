@@ -1,29 +1,35 @@
-﻿Add find.mjs — the search, with its dependencies injected rather than imported
+Publish the four kernels that were gated once and then forgotten
 
-find.mjs searches the estate by meaning first, then literally, and reports WHY
-each row came back. The property worth gating is the negative space: nonsense
-returns nothing and says so, rather than padding with its ten least-bad rows.
+sessions, episodes, artifacts and find were each mutation-gated by hand when
+they were written, and none of them entered gate-all.mjs. So the record every
+downstream surface reads - the character sheet's rung 5, this repo's CI - was
+reporting 164 mutants when 319 had actually been killed. A kernel gated once
+and never again is gated at a moment, not continuously.
 
-It takes recall and shadows as ARGUMENTS. That is what makes it publishable:
-the implementations live in a memory kernel carrying private material that is
-never published, and importing them would have meant publishing that too. It is
-also the better shape - a search you cannot hand a different recall is a search
-you cannot test without building the whole body first.
+All four are pure and standalone. find.mjs takes its recall and shadows as
+arguments rather than importing them, because the implementations live in a
+memory kernel that holds private material; the other three have no imports at
+all. Their tests import nothing but the kernel under test.
 
-Getting it clean removed code rather than justifying it. Four survivors had
-written proofs of equivalence, and every one was a signal that an unreachable
-branch was sitting there: a null-record guard both callers made impossible, a
-third name fallback that could not fire, a tiebreak re-asserting an order the
-input already had, and a sort chain whose branches could never both differ.
-Deleting them beat explaining them - dead defensive code reads exactly like a
-live check when you come back to it.
+What each refuses:
 
-Two real bugs fell out. The raw recall score was compared against the floor
-while a rounded one was reported, so a hit shown as 8 might have been 7.996 and
-turned away with nothing on the row to say so. And the filter re-tested a
-threshold admission had already enforced, which could never fail except with a
-floor of zero, where it admitted a words-only hit whose word score was too weak
-purely because zero cleared a floor of zero.
+  sessions  - a system reminder, a tool result and a compaction summary all
+              arrive wearing the user's role and are not the user. The filter
+              is a FIELD (origin.kind), not a pattern list, because a field
+              catches machine origins nobody has invented yet.
+  episodes  - co-occurrence is the only relation a transcript honestly
+              asserts. The predicate is `related`, never an invented one, and
+              topics are grounded in real names so the graph cannot fill with
+              "thing" and "build".
+  artifacts - secrets are never indexed, contents are never stored, and
+              "everything" is not a corpus - it is a disk. Version collapse is
+              scoped to the folder, because filename alone folded 78% of a
+              real corpus away by merging every README into one.
 
-44/44 killed, 84 tests, empty baseline. Repo total now 208 killed across eight
-kernels, 0 unexplained.
+Also fixes a baseline file that carried a UTF-8 BOM, which made JSON.parse
+throw. The gate reported that honestly as an unexplained survivor rather than
+treating an unreadable record as a pass - which is the correct direction to
+fail, and had teeth: rung 5 requires zero unexplained.
+
+319 killed across eleven kernels, 0 unexplained, 1 baselined with a written
+proof of equivalence.

@@ -33,6 +33,9 @@ functions; the didy that uses them stays on its owner's machine and is never pub
 | `endgame.mjs` | there is **no setter** for level, and you cannot skip a rung |
 | `organcheck.mjs` | an organ is admitted because it was **read**, never because it arrived claiming to be fine |
 | `find.mjs` | nonsense returns **nothing**, and says so — rather than padding with its ten least-bad rows |
+| `sessions.mjs` | a system reminder, a tool result and a compaction summary all wear the user's role and are **not the user** |
+| `episodes.mjs` | co-occurrence is the only relation a transcript asserts — `related`, never an invented predicate |
+| `artifacts.mjs` | secrets are never indexed; contents are never stored; **"everything" is not a corpus, it is a disk** |
 | `organs/ledger.mjs` | an entry that does not balance **is not recorded** — and a correction is a new entry, never an edit |
 | `organs/pipeline.mjs` | a deal cannot enter a stage it has not earned; the forecast carries its exclusions |
 | `organs/deadline.mjs` | an unknown legal rule is **refused, never estimated** |

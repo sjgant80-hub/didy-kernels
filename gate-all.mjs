@@ -20,6 +20,9 @@ const KERNELS = [
   { file: 'endgame.mjs',    test: 'node endgame.test.mjs',    baseline: 'witness.endgame.baseline.json' },
   { file: 'organcheck.mjs', test: 'node organcheck.test.mjs', baseline: 'witness.organcheck.baseline.json' },
   { file: 'find.mjs',       test: 'node find.test.mjs',       baseline: 'witness.find.baseline.json' },
+  { file: 'sessions.mjs',   test: 'node sessions.test.mjs',   baseline: 'witness.sessions.baseline.json' },
+  { file: 'episodes.mjs',   test: 'node episodes.test.mjs',   baseline: 'witness.episodes.baseline.json' },
+  { file: 'artifacts.mjs',  test: 'node artifacts.test.mjs',  baseline: 'witness.artifacts.baseline.json' },
   // The four business organs share one suite, so each is mutated against the whole of it.
   { file: 'organs/ledger.mjs',   test: 'node seats.test.mjs', baseline: 'witness.ledger.baseline.json' },
   { file: 'organs/pipeline.mjs', test: 'node seats.test.mjs', baseline: 'witness.pipeline.baseline.json' },

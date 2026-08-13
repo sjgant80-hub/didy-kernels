@@ -1,5 +1,5 @@
 {
- "ran": "2026-08-12",
+ "ran": "2026-08-13",
  "runs": [
   {
    "kernel": "loadout.mjs",
@@ -44,6 +44,33 @@
    "survivors": []
   },
   {
+   "kernel": "sessions.mjs",
+   "killed": 50,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
+   "kernel": "episodes.mjs",
+   "killed": 23,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
+   "kernel": "artifacts.mjs",
+   "killed": 38,
+   "score": 1,
+   "clean": true,
+   "baselined": 0,
+   "unexplained": 0,
+   "survivors": []
+  },
+  {
    "kernel": "organs/ledger.mjs",
    "killed": 11,
    "score": 1,
@@ -80,7 +107,7 @@
    "survivors": []
   }
  ],
- "killed": 208,
+ "killed": 319,
  "unexplained": 0,
  "allClean": true
 }
