@@ -44,6 +44,72 @@ export function orbits(nodes, exempt) {
     .sort((a, b) => String(b.pushed || '').localeCompare(String(a.pushed || '')) || String(a.name).localeCompare(String(b.name)));
 }
 
+// ⚑ THREE REPOS THAT WERE ONE DECISION ARE ONE ROW.
+//
+// The estate mints companions systematically: <thing>-api, <thing>-mcp, <thing>-sdk, and a second
+// family of <vertical>onboard / paper / practice. fallworld has always collapsed these; the agenda
+// did not, so a single afternoon of scaffolding read as 123 separate things to do and buried the one
+// real item under it. A count that is three times the number of decisions is not a backlog, it is a
+// broken measure — and acting on it would mean farming pages for stubs, which is the exact thing the
+// estate exists to refuse.
+//
+// It is a COLLAPSE, NOT A HIDE. The row carries every member name and the repo count stays reported
+// alongside the row count, so nothing vanishes and the two numbers can never be confused.
+const TAILS = ['onboard', 'paper', 'practice'];
+
+export function familyOf(name) {
+  const s = String(name == null ? '' : name);
+  const m = /^(.+)-(api|mcp|sdk)$/.exec(s);
+  if (m) return { base: m[1], part: m[2] };
+  for (const tail of TAILS) {
+    // Strictly longer, or "paper" itself would collapse into an empty base and swallow unrelated repos.
+    if (s.length > tail.length && s.endsWith(tail)) return { base: s.slice(0, -tail.length), part: tail };
+  }
+  return null;
+}
+
+/**
+ * Group a list of orbiting nodes into families. A base with only ONE member present is left alone:
+ * a lone repo is not a family, and renaming it to a family nobody can point at would be a worse
+ * answer than the one it replaced. Input order is preserved, so newest-first stays newest-first.
+ */
+export function collapse(list) {
+  const items = (Array.isArray(list) ? list : []).filter(n => n && n.name != null);
+  const byBase = new Map();
+  for (const n of items) {
+    const f = familyOf(n.name);
+    if (!f) continue;
+    if (!byBase.has(f.base)) byBase.set(f.base, []);
+    byBase.get(f.base).push({ node: n, part: f.part });
+  }
+
+  const baseOf = new Map();
+  for (const [base, members] of byBase) {
+    if (members.length < 2) continue;
+    for (const m of members) baseOf.set(m.node.name, base);
+  }
+
+  const rows = [], seen = new Set();
+  for (const n of items) {
+    const base = baseOf.get(n.name);
+    if (base == null) {
+      rows.push({ name: String(n.name), pushed: n.pushed || null, members: [String(n.name)], parts: [] });
+      continue;
+    }
+    if (seen.has(base)) continue;
+    seen.add(base);
+    const group = byBase.get(base);
+    rows.push({
+      name: base,
+      // The family was last touched when its most recent member was.
+      pushed: group.map(m => m.node.pushed).filter(Boolean).sort().pop() || null,
+      members: group.map(m => String(m.node.name)).sort(),
+      parts: group.map(m => m.part).sort(),
+    });
+  }
+  return rows;
+}
+
 /** What was excused, and why — kept visible, so an exemption is a decision on the record. */
 export function excused(nodes, exempt) {
   const out = [];
@@ -61,6 +127,9 @@ export function excused(nodes, exempt) {
  */
 const CLOSES = {
   orbit: 'ship a page anyone can open — that is the whole difference between a fold and a repo',
+  // A family is deliberately NOT "ship three pages". Scaffolding minted in a batch is one decision,
+  // and the honest close is to decide about the family: give it one page, or excuse it with a reason.
+  family: 'decide about the family as a whole — one page for the set, or one written reason it should not have one',
   shadow: 'commit it or write down why not, so it stops costing a decision every time it comes round',
 };
 
@@ -83,13 +152,20 @@ export function agenda(nodes, shadowList = [], opts) {
     // guard is indistinguishable from a live one when you read it later.
     .sort((a, b) => b.times_shadowed - a.times_shadowed);
 
+  const fam = collapse(orb);
+
   const rows = [];
-  for (const n of orb) {
+  for (const f of fam) {
     rows.push({
       kind: 'orbit', evidence: 'measured',
-      what: n.name,
-      why: `touched ${n.pushed || 'recently'} and serves no page`,
-      closes: CLOSES.orbit,
+      what: f.name,
+      // Every member named on the row. A collapsed count with no way to see what went into it is the
+      // same failure as an exemption with no reason.
+      members: f.members,
+      why: f.members.length > 1
+        ? `${f.members.length} repos of one family (${f.parts.join('/')}) — last touched ${f.pushed || 'recently'}, and not one of them serves a page`
+        : `touched ${f.pushed || 'recently'} and serves no page`,
+      closes: f.members.length > 1 ? CLOSES.family : CLOSES.orbit,
     });
   }
   for (const s of shadows) {
@@ -104,7 +180,11 @@ export function agenda(nodes, shadowList = [], opts) {
   const shown = rows.slice(0, limit);
   return {
     agenda: shown,
-    orbits: orb.length, shadows: shadows.length,
+    // ⚑ TWO NUMBERS, BOTH NAMED. `orbits` stays the count of REPOS, so every existing reader keeps
+    // meaning what it meant. `orbitRows` is the count of DECISIONS after families collapse. Quietly
+    // redefining the first would have been the worse fix: a number that changes meaning is harder to
+    // catch than one that is missing.
+    orbits: orb.length, orbitRows: fam.length, shadows: shadows.length,
     // Excused rows are COUNTED and their reasons returned. A backlog that silently shrank is
     // indistinguishable from one that got finished, and only one of those is worth anything.
     excused: off.length, excusedRows: off,
@@ -114,7 +194,9 @@ export function agenda(nodes, shadowList = [], opts) {
     // equal, so the boundary could not be made to fail and the line was untestable by construction.
     truncated: Math.max(0, rows.length - shown.length),
     line: orb.length || shadows.length
-      ? `${orb.length} measured (touched, serves nothing) · ${shadows.length} inferred (circled, not taken)`
+      ? `${orb.length} measured (touched, serves nothing)`
+        + (fam.length < orb.length ? ` in ${fam.length} families` : '')
+        + ` · ${shadows.length} inferred (circled, not taken)`
         + (off.length ? ` · ${off.length} excused with a written reason` : '')
         + (rows.length > shown.length ? ` · showing ${shown.length} of ${rows.length}` : '')
       : `nothing measured and nothing circled — the frontier is either finished or not moving`
@@ -125,4 +207,4 @@ export function agenda(nodes, shadowList = [], opts) {
   };
 }
 
-export default { orbits, agenda };
+export default { orbits, agenda, collapse, familyOf, excused, exemptionOf };

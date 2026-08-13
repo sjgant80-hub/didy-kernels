@@ -3,7 +3,7 @@
 // The failure this kernel exists to prevent is subtle: an agenda that blends a MEASURED gap with an
 // INFERRED one reads as a single confident list, and the measurement is what gets diluted. So most of
 // these tests are about keeping the two kinds apart and keeping the bound attached.
-import { orbits, agenda, excused, exemptionOf, MIN_REASON } from './act.mjs';
+import { orbits, agenda, excused, exemptionOf, collapse, familyOf, MIN_REASON } from './act.mjs';
 
 let pass = 0, fail = 0;
 const ok = (c, m) => { c ? pass++ : fail++; console.log((c ? '  ✓ ' : '  ✗ FAIL ') + m); };
@@ -154,6 +154,100 @@ console.log('\n=== §11 · ⚑ AN EXEMPTION IS A SENTENCE, NOT A FLAG ===');
   ok(excused([node('shipped', true, true, '2026-08-01')], { shipped: 'a reason long enough to count here' }).length === 0,
      'something already live is not reported as excused — it was never a gap');
   ok(excused(null, good).length === 0 && orbits(null, good).length === 0, 'garbage excuses nothing and orbits nothing');
+}
+
+console.log('\n=== §10 · ⚑ THREE REPOS THAT WERE ONE DECISION ARE ONE ROW ===');
+{
+  const trio = [
+    node('fallcrm-api', true, false, '2026-07-07'),
+    node('fallcrm-mcp', true, false, '2026-07-07'),
+    node('fallcrm-sdk', true, false, '2026-07-08'),
+  ];
+  const c = collapse(trio);
+  ok(c.length === 1, 'an api/mcp/sdk trio collapses to ONE row');
+  ok(c[0].name === 'fallcrm', 'and the row is named for the family, not for whichever member came first');
+  ok(c[0].members.length === 3 && c[0].members.join(',') === 'fallcrm-api,fallcrm-mcp,fallcrm-sdk',
+     '⚑ COLLAPSE IS NOT HIDE — every member is named on the row');
+  ok(c[0].parts.join('/') === 'api/mcp/sdk', 'and which parts exist is carried, so the row says what kind of family it is');
+  ok(c[0].pushed === '2026-07-08', 'the family was last touched when its most RECENT member was');
+
+  const a = agenda(trio, []);
+  ok(a.orbits === 3, 'the REPO count is unchanged — existing readers keep meaning what they meant');
+  ok(a.orbitRows === 1, '⚑ and the DECISION count is reported separately, so the two can never be confused');
+  ok(a.agenda.length === 1, 'the agenda itself shows one thing to decide, not three things to do');
+  ok(/3 repos of one family/.test(a.agenda[0].why), 'the row says how many repos it stands for');
+  ok(/last touched 2026-07-08/.test(a.agenda[0].why),
+     'and it prints the REAL date, not the vague fallback — "recently" on a row that knows the day is a lie');
+  const undated = agenda([node('d-api', true, false, null), node('d-sdk', true, false, null)], []);
+  ok(/last touched recently/.test(undated.agenda[0].why),
+     'and only falls back to "recently" when there genuinely is no date to print');
+  ok(/in 1 families/.test(a.line), 'and the summary line states the collapse rather than hiding it');
+  ok(/decide about the family/.test(a.agenda[0].closes),
+     '⚑ the close is DECIDE ABOUT THE FAMILY, never "ship three pages" — batch scaffolding is one decision');
+}
+
+console.log('\n=== §11 · a lone repo is not a family ===');
+{
+  const lone = [node('solo-api', true, false, '2026-07-07'), node('unrelated', true, false, '2026-07-06')];
+  const c = collapse(lone);
+  ok(c.length === 2, 'one member with no sibling present is left as its own row');
+  ok(c[0].name === 'solo-api', '⚑ and keeps its REAL name — renaming it to a family nobody can point at is a worse answer');
+  ok(c[0].members.length === 1 && c[0].members[0] === 'solo-api', 'a lone row still carries its member, so the shape is uniform');
+  const a = agenda(lone, []);
+  ok(/touched .* and serves no page/.test(a.agenda[0].why), 'and it gets the single-repo reason, not the family one');
+  ok(!/in \d+ families/.test(a.line), 'when nothing collapsed, the line does not claim a collapse');
+}
+
+console.log('\n=== §12 · the second family, and the tail that must not swallow ===');
+{
+  const vert = [
+    node('falldentalonboard', true, false, '2026-07-07'),
+    node('falldentalpaper', true, false, '2026-07-07'),
+    node('falldentalpractice', true, false, '2026-07-07'),
+  ];
+  const c = collapse(vert);
+  ok(c.length === 1 && c[0].name === 'falldental', 'onboard/paper/practice collapse the same way');
+
+  ok(familyOf('paper') === null, '⚑ "paper" ALONE has no base — a bare tail must not collapse into an empty family');
+  ok(familyOf('onboard') === null && familyOf('practice') === null, 'nor the other bare tails');
+  ok(familyOf('xpaper') !== null && familyOf('xpaper').base === 'x', 'but one character of base is enough to be a family');
+  ok(familyOf('plain-repo') === null, 'a name with no family suffix belongs to no family');
+  ok(familyOf('a-api').base === 'a' && familyOf('a-api').part === 'api', 'the suffix form splits base and part');
+  ok(familyOf(null) === null && familyOf(undefined) === null, 'garbage belongs to no family');
+}
+
+console.log('\n=== §13 · collapsing never loses or duplicates a repo ===');
+{
+  const mixed = [
+    node('alpha-api', true, false, '2026-08-02'),
+    node('alpha-sdk', true, false, '2026-08-01'),
+    node('standalone', true, false, '2026-08-03'),
+    node('beta-mcp', true, false, '2026-07-30'),
+  ];
+  const c = collapse(mixed);
+  const seen = c.flatMap(r => r.members);
+  ok(seen.length === 4, 'every input repo appears exactly once across the rows');
+  ok(new Set(seen).size === 4, 'and none appears twice');
+  ok(c.length === 3, 'the pair collapses, the singleton and the standalone do not');
+  // collapse() does not sort — it preserves the order it was handed. orbits() is what sorts, and
+  // agenda() composes the two, so the newest-first guarantee has to be checked THROUGH agenda.
+  ok(c[0].name === 'alpha', 'collapse preserves the order it was given rather than imposing its own');
+  ok(agenda(mixed, []).agenda[0].what === 'standalone',
+     '⚑ and through agenda the newest still leads — the sort happens before the collapse, not after');
+  ok(collapse(null).length === 0 && collapse([null, { name: null }]).length === 0, 'garbage collapses to nothing');
+}
+
+console.log('\n=== §14 · an exempted member leaves the family before it is counted ===');
+{
+  const nodes = [
+    node('gamma-api', true, false, '2026-07-07'),
+    node('gamma-mcp', true, false, '2026-07-07'),
+    node('gamma-sdk', true, false, '2026-07-07'),
+  ];
+  const a = agenda(nodes, [], { exempt: { 'gamma-sdk': 'a written reason long enough to count as one' } });
+  ok(a.orbits === 2 && a.orbitRows === 1, 'the excused member is gone from the repo count AND from the family');
+  ok(a.agenda[0].members.join(',') === 'gamma-api,gamma-mcp', '⚑ and the row names only what is actually still open');
+  ok(a.excused === 1, 'while the exemption stays visible on its own count');
 }
 
 console.log('\n=== §9 · pure under garbage ===');
